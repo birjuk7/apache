@@ -1,0 +1,100 @@
+apache hosting multiple websites
+
+
+sudo apt install apache2
+cd /var/www
+sudo mkdir -p web1.net/public_html
+vim web1.net/public_html/index.html
+<p>This is a website 1.</p>
+
+sudo mkdir -p web2.com/public_html
+vim web2.net/public_html/index.html
+<p>This is a website 2.</p>
+
+sudo chown -R $USER:$USER web1.net/public_html
+sudo chown -R $USER:$USER web2.com/public_html
+
+sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/web1.net.conf
+
+sudo vim /etc/apache2/sites-available/web1.net.conf
+
+	ServerAdmin webmaster@web1.net
+        DocumentRoot /var/www/web1.net/public_html
+        ServerName web1.net
+        ServerAlias www.web1.net
+
+
+
+to enABLE the configuration                                                                               #  sudo a2dissite web1.net.conf
+sudo a2ensite web1.net.conf
+Enabling site web1.net.
+To activate the new configuration, you need to run:
+  systemctl reload apache2
+
+
+to disable default configuration
+sudo a2dissite 000-default.conf
+sudo service apache2 restart
+
+
+to change hosts configuration file to access web site
+ sudo vim /etc/hosts
+
+sudo vim /etc/apache2/apache2.conf
+ServerName localhost
+
+===================
+sudo apache2ctl configtest                                                                     ### to check syntax of apache configuration file
+
+sudo systemctl restart apache2
+
+==============adding more sites=================
+sudo mkdir -p web3.com/public_html
+cd web3.com/public_html 
+vim index.html
+<p>This is a website 3.</p>
+
+sudo chown -R $USER:$USER  web3.com/public_html
+-------------------
+sudo vim /etc/apache2/sites-available/web3.com.conf
+   ServerAdmin webmaster@web3.com
+        DocumentRoot /var/www/web3.com/public_html
+        ServerName web3.com
+        ServerAlias www.web3.com
+
+wq!
+---------------------
+sudo a2ensite web3.com.conf
+
+
+sudo vim /etc/hosts
+192.16x.x.136   web3.com
+---------------------------------------------
+sudo systemctl reload apache2
+sudo systemctl restart apache2
+**************end************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
